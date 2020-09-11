@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class NextPage extends StatelessWidget {
-  NextPage(User user, BuildContext context);
+  //TODO:イニシャライザ。。初期化したときに値を定義できるのでNextPageのuserを初期化時にセット
+  NextPage(this.user);
+  //TODO:遷移先のこのクラスでuserを受け取ったのでこれでuserを使える様になった
+  final User user;
 
   @override
   Widget build(BuildContext context) {
-    User userData;
     return ChangeNotifierProvider<NextModel>(
-      create: (_) => NextModel(userData),
+      create: (_) => NextModel(),
       child: Scaffold(
         appBar: AppBar(
           title: Text('遷移先'),
@@ -21,13 +23,13 @@ class NextPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Image.network('${model.photoURL}'),
+                  Image.network('${user.photoURL}'),
                   Text(
-                    '${model.name}',
+                    '${user.displayName}',
                     style: TextStyle(fontSize: 24),
                   ),
                   Text(
-                    '${model.email}',
+                    '${user.email}',
                     style: TextStyle(fontSize: 24),
                   ),
                   RaisedButton(

@@ -24,9 +24,8 @@ class Login extends StatelessWidget {
                     RaisedButton(
                       child: Text('Sign in Google'),
                       onPressed: () async {
-                        User user;
                         try {
-                          await model.signInWithGoogle();
+                          User user = await model.signInWithGoogle();
 
                           await model.nextPage(user, context);
                         } catch (e) {

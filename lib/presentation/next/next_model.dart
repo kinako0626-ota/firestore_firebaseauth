@@ -1,21 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class NextModel extends ChangeNotifier {
-  User userData;
   String name = '';
   String email;
   String photoURL;
-
   final GoogleSignIn googleSignIn = GoogleSignIn();
-
-  NextModel(User userData) {
-    this.userData = userData;
-    this.name = userData.displayName;
-    this.email = userData.email;
-    this.photoURL = userData.photoURL;
-  }
+  //TODO:ここ必要なし
+  // NextModel(User user) {
+  //   this.name = user.displayName;
+  //   this.email = user.email;
+  //   this.photoURL = user.photoURL;
+  //   notifyListeners();
+  // }
 
   //TODO: Google SignOut
   Future googleWithSignOut(BuildContext context) async {

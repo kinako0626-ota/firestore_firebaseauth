@@ -36,9 +36,13 @@ class LoginModel extends ChangeNotifier {
   }
 
   //TODO:遷移先に取得したuserを渡す
-  nextPage(User user, BuildContext context) {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => NextPage(user, context)));
+  nextPage(user, context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NextPage(
+                  user,
+                )));
     notifyListeners();
   }
 }
