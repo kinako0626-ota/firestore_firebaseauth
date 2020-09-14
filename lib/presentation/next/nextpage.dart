@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firestore_firebaseauth/presentation/next/next_model.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 class NextPage extends StatelessWidget {
@@ -23,7 +24,9 @@ class NextPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Image.network('${user.photoURL}'),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(user.photoURL),
+                  ),
                   Text(
                     '${user.displayName}',
                     style: TextStyle(fontSize: 24),

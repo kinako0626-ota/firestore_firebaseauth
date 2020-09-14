@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class NextModel extends ChangeNotifier {
-  String name = '';
-  String email;
-  String photoURL;
+  // String name = '';
+  // String email;
+  // String photoURL;
+
   final GoogleSignIn googleSignIn = GoogleSignIn();
   //TODO:ここ必要なし
   // NextModel(User user) {
