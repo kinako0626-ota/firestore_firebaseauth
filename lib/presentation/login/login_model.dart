@@ -5,6 +5,29 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginModel extends ChangeNotifier {
+  String mail = '';
+  String password = '';
+
+  //TODO:login
+
+  Future login() async {
+    if (mail.isEmpty) {
+      throw ('メールアドレスを入力してください');
+    }
+    if (password.isEmpty) {
+      throw ('パスワードを入力してください');
+    }
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: mail,
+        password: password,
+      );
+    } catch (e) {
+      throw (_convertErrorMessage(e.code));
+    }
+  }
+
   //TODO; Google SignIn
   Future<User> signInWithGoogle() async {
     try {
@@ -44,5 +67,20 @@ class LoginModel extends ChangeNotifier {
                   user,
                 )));
     notifyListeners();
+  }
+}
+
+String _convertErrorMessage(e) {
+  switch (e) {
+    case 'invalid-email':
+      return 'メールアドレスを正しい形式で入力してください';
+    case 'wrong-password':
+      return 'パスワードが間違っています';
+    case 'user-not-found':
+      return 'ユーザーが見つかりません';
+    case 'user-disabled':
+      return 'ユーザーが無効です';
+    default:
+      return '不明なエラーです';
   }
 }
