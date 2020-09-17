@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firestore_firebaseauth/presentation/addpost/add_post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddPostPage extends StatelessWidget {
+  AddPostPage(this.user);
+  final User user;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

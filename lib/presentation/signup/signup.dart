@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firestore_firebaseauth/presentation/chat/chatpage.dart';
 import 'package:firestore_firebaseauth/presentation/signup/signup_model.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,11 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:provider/provider.dart';
 
 class SignUpPage extends StatelessWidget {
+  final User user;
+  final mailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  SignUpPage({Key key, this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -73,8 +79,10 @@ class SignUpPage extends StatelessWidget {
                 SignInButton(
                   Buttons.Apple,
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ChatPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ChatPage(user)));
                   },
                 ),
                 Divider(),

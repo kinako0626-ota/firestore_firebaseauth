@@ -1,3 +1,5 @@
 import 'package:flutter/material.dart';
 
-class AddPostModel extends ChangeNotifier {}
+class AddPostModel extends ChangeNotifier {
+  String messageText = '';
+}

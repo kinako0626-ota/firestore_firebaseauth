@@ -10,6 +10,7 @@ import 'login_model.dart';
 
 class Login extends StatelessWidget {
   final User user;
+
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -44,6 +45,7 @@ class Login extends StatelessWidget {
                         decoration: InputDecoration(
                           hintText: 'パスワードを入力してください',
                         ),
+                        obscureText: true,
                         onChanged: (text) {
                           model.password = text;
                         },
@@ -58,10 +60,10 @@ class Login extends StatelessWidget {
                             try {
                               //TODO:
                               await model.login();
-                              await Navigator.pushReplacement(
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ChatPage(),
+                                    builder: (context) => ChatPage(this.user),
                                     fullscreenDialog: true,
                                   ));
                             } catch (e) {
