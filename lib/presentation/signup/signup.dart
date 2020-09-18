@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firestore_firebaseauth/presentation/chat/chatpage.dart';
 import 'package:firestore_firebaseauth/presentation/signup/signup_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_builder.dart';
@@ -50,14 +49,14 @@ class SignUpPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: SignInButtonBuilder(
-                    text: 'Get going with Email',
+                    text: '新規登録する',
                     icon: Icons.email,
                     onPressed: () async {
                       //TODO:try{}catch{}とすることでtryには成功したときの処理、catchには失敗したときの処理が走る
                       try {
                         //TODO:
                         await model.signUp();
-                        _showDialog(context, '登録完了しました');
+                        model.nextPage(user, context);
                       } catch (e) {
                         //TODO:
                         _showDialog(context, e.toString());
@@ -71,18 +70,18 @@ class SignUpPage extends StatelessWidget {
                 Divider(),
                 SignInButton(
                   Buttons.GoogleDark,
-                  onPressed: () {
-                    _showButtonPressDialog(context, 'Google (dark)');
-                  },
-                ),
-                Divider(),
-                SignInButton(
-                  Buttons.Apple,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChatPage(user)));
+                  text: 'Googleアカウントで登録',
+                  onPressed: () async {
+                    try {
+                      User user = await model.signInWithGoogle();
+                      if (user == null) {
+                        return null;
+                      } else {
+                        await model.nextPage(user, context);
+                      }
+                    } catch (e) {
+                      return null;
+                    }
                   },
                 ),
                 Divider(),
@@ -110,12 +109,4 @@ Future _showDialog(BuildContext context, String title) {
       );
     },
   );
-}
-
-void _showButtonPressDialog(BuildContext context, String provider) {
-  Scaffold.of(context).showSnackBar(SnackBar(
-    content: Text('$provider Button Pressed!'),
-    backgroundColor: Colors.black26,
-    duration: Duration(milliseconds: 400),
-  ));
 }

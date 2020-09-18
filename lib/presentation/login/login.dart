@@ -53,7 +53,7 @@ class Login extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 20.0),
                         child: SignInButtonBuilder(
-                          text: 'ログインする',
+                          text: 'ログイン',
                           icon: Icons.email,
                           onPressed: () async {
                             //TODO:try{}catch{}とすることでtryには成功したときの処理、catchには失敗したときの処理が走る
@@ -79,6 +79,7 @@ class Login extends StatelessWidget {
                       Divider(),
                       SignInButton(
                         Buttons.GoogleDark,
+                        text: 'Googleでログイン',
                         onPressed: () async {
                           try {
                             User user = await model.signInWithGoogle();
@@ -91,6 +92,10 @@ class Login extends StatelessWidget {
                             return null;
                           }
                         },
+                      ),
+                      Divider(),
+                      Container(
+                        child: Text('登録がまだの方は新規登録してください！'),
                       ),
                       Divider(),
                       SignInButton(

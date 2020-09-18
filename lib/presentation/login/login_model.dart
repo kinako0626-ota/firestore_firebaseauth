@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firestore_firebaseauth/presentation/chat/chatpage.dart';
 import 'package:flutter/cupertino.dart';
@@ -49,19 +48,6 @@ class LoginModel extends ChangeNotifier {
 
       final User user =
           (await FirebaseAuth.instance.signInWithCredential(credential)).user;
-
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc()
-          .collection('user')
-          .add(
-        {
-          'userID': user.uid,
-          'userName': user.displayName,
-          'userPhotoURL': user.photoURL,
-          'created_at': Timestamp.now(),
-        },
-      );
       notifyListeners();
 
 //TODO:user情報を返す
