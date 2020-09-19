@@ -95,7 +95,7 @@ class Login extends StatelessWidget {
                       ),
                       Divider(),
                       Container(
-                        child: Text('登録がまだの方は新規登録してください！'),
+                        child: Text('新規登録はこちらから'),
                       ),
                       Divider(),
                       SignInButton(

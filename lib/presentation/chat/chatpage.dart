@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firestore_firebaseauth/presentation/addpost/add_post_page.dart';
+
 import 'package:firestore_firebaseauth/presentation/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
@@ -12,12 +12,12 @@ import 'chat_model.dart';
 class ChatPage extends StatelessWidget {
   ChatPage(this.user);
   final User user;
-
+  final textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return ChangeNotifierProvider<ChatModel>(
-      create: (_) => ChatModel(),
+      create: (_) => ChatModel(user)..fetchChatEntry(),
       child: Scaffold(
         appBar: AppBar(
           title: Text('Chat画面'),
@@ -38,15 +38,20 @@ class ChatPage extends StatelessWidget {
               child: Text('ログイン情報：' + user.displayName),
             ),
             Consumer<ChatModel>(builder: (context, model, child) {
+              final chatEntries = model.chatEntries;
+              // final listTiles = chatEntries.map((chat) => ChatEntry(doc))
+
               return Expanded(
                 // TODO:FutureBuilderを使い、非同期処理の結果を元にWidgetを作成
-                child: FutureBuilder<QuerySnapshot>(
+                // child: ,
+
+                child: StreamBuilder<QuerySnapshot>(
                   //TODO: 投稿メッセージ一覧を取得
                   //TODO: 投稿日時でソート
-                  future: FirebaseFirestore.instance
+                  stream: FirebaseFirestore.instance
                       .collection('posts')
                       .orderBy('date')
-                      .get(),
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final List<DocumentSnapshot> docs = snapshot.data.docs;
@@ -83,17 +88,25 @@ class ChatPage extends StatelessWidget {
                 ),
               );
             }),
+            Consumer<ChatModel>(builder: (context, model, child) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                ),
+                child: model.buildInputArea(),
+              );
+            }),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () async {
-            await Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddPostPage(user),
-              fullscreenDialog: true,
-            ));
-          },
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   child: Icon(Icons.add),
+        //   onPressed: () async {
+        //     await Navigator.of(context).push(MaterialPageRoute(
+        //       builder: (context) => AddPostPage(user),
+        //       fullscreenDialog: true,
+        //     ));
+        //   },
+        // ),
       ),
     );
   }
