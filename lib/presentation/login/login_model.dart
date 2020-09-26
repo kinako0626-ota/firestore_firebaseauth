@@ -10,7 +10,7 @@ class LoginModel extends ChangeNotifier {
 
   //TODO:login
 
-  Future login() async {
+  Future<User> login() async {
     if (mail.isEmpty) {
       throw ('メールアドレスを入力してください');
     }
@@ -19,10 +19,13 @@ class LoginModel extends ChangeNotifier {
     }
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final User mailUser =
+          (await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: mail,
         password: password,
-      );
+      ))
+              .user;
+      return mailUser;
     } catch (e) {
       throw (_convertErrorMessage(e.code));
     }

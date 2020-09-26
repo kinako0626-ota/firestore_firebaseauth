@@ -39,6 +39,7 @@ class ChatModel extends ChangeNotifier {
     notifyListeners();
   }
 
+//TODO: message入力部分
   Widget buildInputArea() {
     return Row(
       children: <Widget>[
@@ -48,10 +49,12 @@ class ChatModel extends ChangeNotifier {
         ),
         Expanded(
           child: TextFormField(
+            autofocus: true,
             controller: textEditingController,
             decoration: InputDecoration(labelText: '投稿メッセージ'),
             onChanged: (text) {
               messageText = text;
+              notifyListeners();
             },
           ),
         ),
@@ -68,6 +71,77 @@ class ChatModel extends ChangeNotifier {
               }
             })
       ],
+    );
+  }
+
+//TODO: 9・26追加分
+  Widget buildChatArea(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(16.0),
+            itemBuilder: (BuildContext context, int index) {
+              return buildRow(index);
+            },
+            itemCount: chatEntries.length,
+          ),
+        ),
+        Divider(
+          height: 4.0,
+        ),
+        Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+            ),
+            child: buildInputArea())
+      ],
+    );
+  }
+
+  Widget buildRow(int index) {
+    ChatEntry entry = chatEntries[index];
+    return Container(
+        margin: EdgeInsets.only(top: 8.0),
+        child: user.displayName == entry.userName
+            ? currentUserCommentRow(entry)
+            : otherUserCommentRow(entry));
+  }
+
+  Widget currentUserCommentRow(ChatEntry entry) {
+    return Row(children: <Widget>[
+      Container(child: avatarLayout(entry)),
+      SizedBox(
+        width: 16.0,
+      ),
+      Expanded(child: messageLayout(entry, CrossAxisAlignment.start)),
+    ]);
+  }
+
+  Widget otherUserCommentRow(ChatEntry entry) {
+    return Row(children: <Widget>[
+      Expanded(child: messageLayout(entry, CrossAxisAlignment.end)),
+      SizedBox(
+        width: 16.0,
+      ),
+      Container(child: avatarLayout(entry)),
+    ]);
+  }
+
+  Widget messageLayout(ChatEntry entry, CrossAxisAlignment alignment) {
+    return Column(
+      crossAxisAlignment: alignment,
+      children: <Widget>[
+        Text(entry.userName,
+            style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+        Text(entry.text)
+      ],
+    );
+  }
+
+  Widget avatarLayout(ChatEntry entry) {
+    return CircleAvatar(
+      backgroundImage: NetworkImage(entry.userPhotoURL),
     );
   }
 }

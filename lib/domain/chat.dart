@@ -5,8 +5,10 @@ class ChatEntry {
     documentID = doc.id;
     text = doc.data()['text'];
     userName = doc.data()['userName'];
+    userPhotoURL = doc.data()['userPhotoURL'];
   }
   String documentID;
   String text;
   String userName;
+  String userPhotoURL;
 }

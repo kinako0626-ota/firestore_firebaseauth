@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firestore_firebaseauth/presentation/login/login.dart';
+import 'package:firestore_firebaseauth/presentation/top/top.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
@@ -12,6 +13,7 @@ import 'chat_model.dart';
 class ChatPage extends StatelessWidget {
   ChatPage(this.user);
   final User user;
+
   final textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,18 @@ class ChatPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => Login()));
               },
             ),
+            IconButton(
+              icon: Icon(Icons.qr_code),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Top(),
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
+            ),
           ],
         ),
         body: Column(
@@ -37,14 +51,11 @@ class ChatPage extends StatelessWidget {
               padding: EdgeInsets.all(8.0),
               child: Text('ログイン情報：' + user.displayName),
             ),
+            Center(
+              child: Image.network(user.photoURL),
+            ),
             Consumer<ChatModel>(builder: (context, model, child) {
-              final chatEntries = model.chatEntries;
-              // final listTiles = chatEntries.map((chat) => ChatEntry(doc))
-
               return Expanded(
-                // TODO:FutureBuilderを使い、非同期処理の結果を元にWidgetを作成
-                // child: ,
-
                 child: StreamBuilder<QuerySnapshot>(
                   //TODO: 投稿メッセージ一覧を取得
                   //TODO: 投稿日時でソート
@@ -98,15 +109,6 @@ class ChatPage extends StatelessWidget {
             }),
           ],
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   child: Icon(Icons.add),
-        //   onPressed: () async {
-        //     await Navigator.of(context).push(MaterialPageRoute(
-        //       builder: (context) => AddPostPage(user),
-        //       fullscreenDialog: true,
-        //     ));
-        //   },
-        // ),
       ),
     );
   }

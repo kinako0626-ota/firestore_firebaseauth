@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firestore_firebaseauth/presentation/chat/chatpage.dart';
 import 'package:firestore_firebaseauth/presentation/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_builder.dart';
@@ -37,7 +36,7 @@ class Login extends StatelessWidget {
                           hintText: 'example@sample.com',
                         ),
                         onChanged: (text) {
-                          model.mail = text;
+                          model.mail = text.trim();
                         },
                       ),
                       TextField(
@@ -60,12 +59,6 @@ class Login extends StatelessWidget {
                             try {
                               //TODO:
                               await model.login();
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ChatPage(this.user),
-                                    fullscreenDialog: true,
-                                  ));
                             } catch (e) {
                               //TODO:
                               _showDialog(context, e.toString());

@@ -11,6 +11,8 @@ class SignUpPage extends StatelessWidget {
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  User mailPassUser;
+
   SignUpPage({Key key, this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class SignUpPage extends StatelessWidget {
                       try {
                         //TODO:
                         await model.signUp();
-                        model.nextPage(user, context);
+                        await model.signUpPage(mailPassUser, context);
                       } catch (e) {
                         //TODO:
                         _showDialog(context, e.toString());

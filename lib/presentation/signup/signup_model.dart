@@ -55,7 +55,7 @@ class SignUpModel extends ChangeNotifier {
   }
 
 //TODO:認証
-  Future signUp() async {
+  Future<User> signUp() async {
     if (mail.isEmpty) {
       throw ('メールアドレスを入力してください');
     }
@@ -67,25 +67,37 @@ class SignUpModel extends ChangeNotifier {
       password: password,
     ))
         .user;
-
+    final uId = mailPassUser.uid;
     final email = mailPassUser.email;
     FirebaseFirestore.instance
         .collection('users')
-        .doc()
+        .doc(uId)
         .collection('user')
         .add({
       'mail_address': email,
       'created_at': Timestamp.now(),
     });
+    notifyListeners();
+    return mailPassUser;
+  }
+
+  signUpPage(mailPassUser, context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatPage(mailPassUser),
+      ),
+    );
+    notifyListeners();
   }
 
   nextPage(user, context) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ChatPage(
-                  user,
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatPage(user),
+      ),
+    );
     notifyListeners();
   }
 }
