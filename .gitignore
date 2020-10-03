@@ -39,3 +39,5 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+#api key
+lib/utilities/keys.dart

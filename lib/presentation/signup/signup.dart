@@ -6,6 +6,7 @@ import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class SignUpPage extends StatelessWidget {
   final User user;
   final mailController = TextEditingController();

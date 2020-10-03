@@ -99,16 +99,16 @@ class ChatModel extends ChangeNotifier {
     );
   }
 
-  Widget buildRow(int index) {
+  buildRow(int index) {
     ChatEntry entry = chatEntries[index];
     return Container(
         margin: EdgeInsets.only(top: 8.0),
-        child: user.displayName == entry.userName
+        child: user.email == entry.userEmail
             ? currentUserCommentRow(entry)
             : otherUserCommentRow(entry));
   }
 
-  Widget currentUserCommentRow(ChatEntry entry) {
+  currentUserCommentRow(ChatEntry entry) {
     return Row(children: <Widget>[
       Container(child: avatarLayout(entry)),
       SizedBox(
@@ -118,7 +118,7 @@ class ChatModel extends ChangeNotifier {
     ]);
   }
 
-  Widget otherUserCommentRow(ChatEntry entry) {
+  otherUserCommentRow(ChatEntry entry) {
     return Row(children: <Widget>[
       Expanded(child: messageLayout(entry, CrossAxisAlignment.end)),
       SizedBox(
