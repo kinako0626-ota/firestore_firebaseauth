@@ -1,8 +1,8 @@
+import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firestore_firebaseauth/presentation/login/login.dart';
-import 'package:firestore_firebaseauth/presentation/top/top.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
@@ -31,28 +31,19 @@ class ChatPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => Login()));
               },
             ),
-            IconButton(
-              icon: Icon(Icons.qr_code),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Top(),
-                    fullscreenDialog: true,
-                  ),
-                );
-              },
-            ),
           ],
         ),
         body: Column(
           children: [
-            Container(
-              padding: EdgeInsets.all(8.0),
-              child: Text('ログイン情報：' + user.displayName),
+            Bubble(
+              alignment: Alignment.center,
+              color: Color.fromRGBO(212, 234, 244, 1.0),
+              child: Text('TODAY',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 11.0)),
             ),
-            Center(
-              child: Image.network(user.photoURL),
+            CircleAvatar(
+              backgroundImage: NetworkImage(user.photoURL),
             ),
             Consumer<ChatModel>(builder: (context, model, child) {
               return Expanded(
@@ -69,22 +60,27 @@ class ChatPage extends StatelessWidget {
                       //TODO 取得した投稿メッセージ一覧を元にリスト表示
                       return ListView(
                         children: docs.map((doc) {
-                          return Card(
-                            child: ListTile(
-                              title: Text(doc.data()['text']),
-                              subtitle: Text(doc.data()['userName']),
-                              onLongPress: () async {
-                                //TODO: 自分の名前のところだけ削除可能
-                                if (doc.data()['userName'] ==
-                                    user.displayName) {
-                                  await FirebaseFirestore.instance
-                                      .collection('posts')
-                                      .doc(doc.id)
-                                      .delete();
-                                }
-                              },
-                            ),
+                          return Bubble(
+                            child: Text(doc.data()['text']),
+                            color: Color.fromRGBO(212, 234, 244, 1.0),
+                            alignment: Alignment.center,
                           );
+                          // return Card(
+                          //   child: ListTile(
+                          //     title: Text(doc.data()['text']),
+                          //     subtitle: Text(doc.data()['userName']),
+                          //     onLongPress: () async {
+                          //       //TODO: 自分の名前のところだけ削除可能
+                          //       if (doc.data()['userName'] ==
+                          //           user.displayName) {
+                          //         await FirebaseFirestore.instance
+                          //             .collection('posts')
+                          //             .doc(doc.id)
+                          //             .delete();
+                          //       }
+                          //     },
+                          //   ),
+                          // );
                         }).toList(),
                       );
                     }
