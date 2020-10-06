@@ -12,7 +12,7 @@ class YoutubeModel extends ChangeNotifier {
   initChannel() async {
     Channel channel = await APIService.instance
         .fetchChannel(channelId: 'UCRsMziob9fkdoQYlkBbclGA');
-    channel = channel;
+    this.channel = channel;
     notifyListeners();
   }
 
@@ -54,7 +54,7 @@ class YoutubeModel extends ChangeNotifier {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  '${channel.subscriberCount} subscribers',
+                  'チャンネル登録者数${channel.subscriberCount} 人',
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 16.0,
@@ -122,5 +122,39 @@ class YoutubeModel extends ChangeNotifier {
     channel.videos = allVideos;
     notifyListeners();
     isLoading = false;
+  }
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: channel != null
+          ? NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollDetails) {
+                if (!isLoading &&
+                    channel.videos.length != int.parse(channel.videoCount) &&
+                    scrollDetails.metrics.pixels ==
+                        scrollDetails.metrics.maxScrollExtent) {
+                  loadMoreVideos();
+                }
+                return false;
+              },
+              child: ListView.builder(
+                itemCount: 1 + channel.videos.length,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == 0) {
+                    return buildProfileInfo();
+                  }
+                  Video video = channel.videos[index - 1];
+                  return buildVideo(video, context);
+                },
+              ),
+            )
+          : Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).primaryColor, // Red
+                ),
+              ),
+            ),
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firestore_firebaseauth/presentation/login/login.dart';
+import 'package:firestore_firebaseauth/presentation/youtube/youtube_page.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Login(),
+      home: YoutubePage(),
     );
   }
 }
